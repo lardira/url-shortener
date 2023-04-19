@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Url Shortener</title>
+    <link rel="stylesheet" th:href="@{/css/index.css}">
+  </head>
+  <body>
+    <div class="details-container">
+      <h1 class="details-title">URL Shortener</h1>
+      <span class="details-description">Make your link shorter and suspicious</span>
+    </div>
+    <div class="url-input-form-container">
+      <form class="url-input-form" action="/" method="get">
+        <label for="inputURL">Your Link:</label>
+        <input type="url" id="inputURL" name="inputURL" required pattern="^[^ ].+[^ ]$"/>
+        <input type="submit" value="make it shorter!" />
+      </form>
+      <div th:if="${outputURL}">
+        <div class="url-output-container">
+          <span class="url-output-title">Output:</span>
+          <span class="url-output" th:text="${outputURL}"></span>
+        </div>
+      </div>
+      <div th:if="${error}">
+        <h2 class="input-error-container"th:text="${error}"></h2>
+      </div>
+    </div>
+  </body>
+</html>
