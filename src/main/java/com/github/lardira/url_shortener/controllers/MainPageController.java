@@ -44,8 +44,6 @@ public class MainPageController {
                 model.addAttribute("outputURL", url.getEncoded());
             } catch (MalformedURLException e) {
                 model.addAttribute("error", "the URL is invalid");
-            } catch (Exception e) {
-                return "error";
             }
         return "main";
     }
@@ -53,9 +51,9 @@ public class MainPageController {
     @GetMapping("{encoded}")
     public String redirect(@PathVariable("encoded") String encoded, Model model) {
         URL url = urlService.getBy(encoded);
-        if (url == null) {
-            return "error";
-        }
+
+        if (url == null)
+            throw new RuntimeException();
 
         String redirectTo = url.getOriginal();
         System.out.println("redirecting from " + url.getEncoded() + " to " + redirectTo);
