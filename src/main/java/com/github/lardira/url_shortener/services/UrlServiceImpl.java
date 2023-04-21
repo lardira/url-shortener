@@ -17,22 +17,18 @@ public class UrlServiceImpl implements UrlService {
     BaseEncoder baseEncoder;
 
     @Override
-    @Transactional
     public URL save(URL url) {
         return urlRepository.save(url);
     }
 
     @Override
-    @Transactional
-    public URL getBy(String encodedUrlId) {
-        return urlRepository.getBy(encodedUrlId);
+    public URL findByEncodedUrlId(String encodedUrlId) {
+        return urlRepository.findByEncodedUrlId(encodedUrlId).orElseThrow();
     }
 
     @Override
-    @Transactional
-    public URL find(String url) {
-        return urlRepository.find(url);
-
+    public URL find(String originalUrl) {
+        return urlRepository.findByOriginal(originalUrl).orElseThrow();
     }
 
     //should be in an external class

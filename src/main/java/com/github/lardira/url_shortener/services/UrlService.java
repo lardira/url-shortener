@@ -6,7 +6,7 @@ import java.net.MalformedURLException;
 
 public interface UrlService {
     URL save(URL url);
-    URL getBy(String encodedUrlId);
+    URL findByEncodedUrlId(String encodedUrlId);
     URL find(String url);
     String encode(URL url);
     boolean isValidUrl(String inputURL) throws MalformedURLException;

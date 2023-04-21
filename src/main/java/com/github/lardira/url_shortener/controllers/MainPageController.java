@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import java.net.MalformedURLException;
+import java.util.NoSuchElementException;
 
 @Controller
 @RequestMapping({"", "/"})
@@ -22,38 +23,36 @@ public class MainPageController {
 
     @GetMapping
     public String index(
-            @RequestParam(required = false, value = "inputURL") String inputURL,
+            @RequestParam(required = false, name = "inputURL") String inputURL,
             Model model,
             HttpServletRequest request
     ) {
-        if (inputURL != null)
-            try {
-                //throws MalformedURLException if url is invalid
-                urlService.isValidUrl(inputURL);
+        URL url = new URL(inputURL);
 
-                URL url = urlService.find(inputURL);
-                if (url == null) {
-                    url = urlService.save(new URL(inputURL));
-                    url.setEncodedUrlId(urlService.encode(url));
-                    url.setEncoded(request.getRequestURL() + url.getEncodedUrlId());
+        if (inputURL != null) try {
+            //throws MalformedURLException if url is invalid
+            urlService.isValidUrl(inputURL);
+            url = urlService.find(inputURL);
 
-                    //Updating with encoded values, it looks like there is a better way
-                    urlService.save(url);
-                }
-                model.addAttribute("outputURL", url.getEncoded());
-            } catch (MalformedURLException e) {
-                model.addAttribute("error", "the URL is invalid");
-            }
+        } catch (MalformedURLException e) {
+            model.addAttribute("error", "the URL is invalid");
+
+        } catch (NoSuchElementException e) {
+            urlService.save(url);
+            url.setEncodedUrlId(urlService.encode(url));
+            url.setEncoded(request.getRequestURL() + url.getEncodedUrlId());
+
+            //Updating with encoded values, it looks like there is a better way
+            urlService.save(url);
+        } finally {
+            model.addAttribute("outputURL", url.getEncoded());
+        }
         return "main";
     }
 
     @GetMapping("{encoded}")
     public String redirect(@PathVariable("encoded") String encoded, Model model) {
-        URL url = urlService.getBy(encoded);
-
-        if (url == null)
-            throw new RuntimeException();
-
+        URL url = urlService.findByEncodedUrlId(encoded);
         return "redirect:" + url.getOriginal();
     }
 }
