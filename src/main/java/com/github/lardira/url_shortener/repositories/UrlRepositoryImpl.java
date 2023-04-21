@@ -1,6 +1,7 @@
-package com.github.lardira.url_shortener.dao;
+package com.github.lardira.url_shortener.repositories;
 
 import com.github.lardira.url_shortener.models.URL;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 

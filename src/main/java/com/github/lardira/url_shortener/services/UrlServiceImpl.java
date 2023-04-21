@@ -1,6 +1,6 @@
 package com.github.lardira.url_shortener.services;
 
-import com.github.lardira.url_shortener.dao.UrlRepository;
+import com.github.lardira.url_shortener.repositories.UrlRepository;
 import com.github.lardira.url_shortener.models.URL;
 import com.github.lardira.url_shortener.utils.BaseEncoder;
 import org.springframework.beans.factory.annotation.Autowired;

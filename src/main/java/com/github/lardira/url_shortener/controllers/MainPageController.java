@@ -2,14 +2,13 @@ package com.github.lardira.url_shortener.controllers;
 
 import com.github.lardira.url_shortener.models.URL;
 import com.github.lardira.url_shortener.services.UrlService;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.stereotype.Controller;
 
 import javax.servlet.http.HttpServletRequest;
 import java.net.MalformedURLException;
@@ -55,8 +54,6 @@ public class MainPageController {
         if (url == null)
             throw new RuntimeException();
 
-        String redirectTo = url.getOriginal();
-        System.out.println("redirecting from " + url.getEncoded() + " to " + redirectTo);
-        return "redirect:" + redirectTo;
+        return "redirect:" + url.getOriginal();
     }
 }
